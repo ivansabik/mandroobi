@@ -1,4 +1,4 @@
-from models.misc import ExchangeRate
+from mandroobi.models.misc import ExchangeRate
 
 
 def test_exchange_rate():

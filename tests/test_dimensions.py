@@ -1,5 +1,6 @@
 from datetime import date
-from models.dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Dimension, Driver, Scenario
+
+from mandroobi.models.dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Dimension, Driver, Scenario
 
 
 def test_base_dimension():

@@ -1,4 +1,4 @@
-from models.metrics import ClosingBalance, Metric
+from mandroobi.models.metrics import ClosingBalance, Metric
 
 
 def test_metric():

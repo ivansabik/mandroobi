@@ -2,7 +2,7 @@ from sqlalchemy import Column, event, Float, ForeignKey, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from models.dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Driver, Scenario
+from dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Driver, Scenario
 
 Base = declarative_base()
 
