@@ -1,8 +1,10 @@
+from __future__ import absolute_import
+
 from sqlalchemy import Column, event, Float, ForeignKey, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Driver, Scenario
+from .dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Driver, Scenario
 
 Base = declarative_base()
 
