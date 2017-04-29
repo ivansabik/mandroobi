@@ -1,15 +1,21 @@
 from sqlalchemy import Column, Date, Enum, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy_mixins import ActiveRecordMixin
+
+from ..db import session
 
 Base = declarative_base()
 
 
-class Dimension(Base):
+class Dimension(Base, ActiveRecordMixin):
     __abstract__ = True
 
     id = Column('id', String(length=50), primary_key=True)
     description = Column('description', Text)
     parent_id = Column('parent_id', String(length=50))
+
+
+Dimension.set_session(session)
 
 
 class Account(Dimension):

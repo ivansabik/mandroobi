@@ -15,7 +15,7 @@ App for preparing budget and forecast Financial Statements (Balance Sheet and In
   - Input planning values using web interface
   - Input planning values using spreadsheets
   - Input planning values uploading a CSV/spreadsheet
-- Plan using planning statistical model (linear, regression, naïve, average, etc)
+- Plan using planning statistical model (linear regression, weighted average, naïve, etc)
 - Plan using custom Python code
 - Run allocation to plan top-down
 - View audit records

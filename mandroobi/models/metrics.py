@@ -3,13 +3,15 @@ from __future__ import absolute_import
 from sqlalchemy import Column, event, Float, ForeignKey, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy_mixins import ActiveRecordMixin
 
 from .dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Driver, Scenario
+from ..db import session
 
 Base = declarative_base()
 
 
-class Metric(Base):
+class Metric(Base, ActiveRecordMixin):
     __tablename__ = 'metrics'
 
     name = Column('name', String(length=50))
@@ -29,6 +31,9 @@ class Metric(Base):
     currency = relationship(Currency, uselist=False)
     driver = relationship(Driver, uselist=False)
     scenario = relationship(Scenario, uselist=False)
+
+
+Metric.set_session(session)
 
 
 class ClosingBalance(Metric):
