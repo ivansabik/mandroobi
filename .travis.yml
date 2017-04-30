@@ -7,8 +7,8 @@ python:
   - 3.5
   - 3.6
 install:
-  - pip install -r requirements.dev.txt && pip install -e .
+  - pip install -r requirements-dev.txt && pip install -e .
 before_script:
   - mkdir -p shippable/codecoverage
 script:
-  - py.test --cov-report xml:/shippable/codecoverage/coverage.xml --cov-report term-missing --cov=mandroobi tests
+  - py.test --cov-report xml:shippable/codecoverage/coverage.xml --cov-report term-missing --cov=mandroobi tests
