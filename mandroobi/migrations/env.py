@@ -24,7 +24,7 @@ def combine_metadata(*args):
             t.tometadata(m)
     return m
 
-from models import dimensions, metrics, misc  # noqa
+from mandroobi.models import dimensions, metrics, misc  # noqa
 target_metadata = combine_metadata(dimensions.Base.metadata, metrics.Base.metadata, misc.Base.metadata)
 
 # other values from the config, defined by the needs of env.py,
