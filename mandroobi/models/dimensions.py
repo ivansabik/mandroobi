@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from sqlalchemy import Column, Date, Enum, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_mixins import ActiveRecordMixin
@@ -22,7 +24,7 @@ class Account(Dimension):
     __tablename__ = 'accounts'
     __mapper_args__ = {'concrete': True}
 
-    type = Column('type', Enum('asset', 'liablility', 'equity', 'income', 'expense'))
+    type = Column('type', Enum('asset', 'liability', 'equity', 'income', 'expense'))
 
 
 class AccountingPeriod(Dimension):
