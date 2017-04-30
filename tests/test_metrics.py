@@ -37,7 +37,7 @@ def test_closing_balance():
 @pytest.mark.usefixtures('create_test_db')
 def test_closing_balance_inc_lia_equ_reverse_sign():
     _add_test_dimensions()
-    ClosingBalance.create(
+    closing_balance = ClosingBalance.create(
         account_id='20000',
         accounting_period_id='20170101',
         business_unit_id='TESTINO_LLC',
@@ -46,5 +46,8 @@ def test_closing_balance_inc_lia_equ_reverse_sign():
         scenario_id='ACTUAL',
         amount=100000.00
     )
+    assert closing_balance.amount == -100000.00
+
+    # Sign also gets persisted
     closing_balance = ClosingBalance.where(account_id='20000').first()
     assert closing_balance.amount == -100000.00
