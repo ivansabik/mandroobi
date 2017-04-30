@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from sqlalchemy import Column, event, Float, ForeignKey, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy_mixins import ActiveRecordMixin
+from sqlalchemy_mixins import ActiveRecordMixin, SmartQueryMixin
 
 from .dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Driver, Scenario
 from ..db import session
@@ -11,7 +11,7 @@ from ..db import session
 Base = declarative_base()
 
 
-class Metric(Base, ActiveRecordMixin):
+class Metric(Base, ActiveRecordMixin, SmartQueryMixin):
     __tablename__ = 'metrics'
 
     name = Column('name', String(length=50))
@@ -42,5 +42,7 @@ class ClosingBalance(Metric):
 
 @event.listens_for(ClosingBalance, 'before_insert')
 def add_sign(mapper, connection, target):
-    if target.account.type in ('liability', 'equity', 'income'):
-        target.closing_balance *= -1
+    # TODO: Use relationship like target.account.type
+    account = Account.find_or_fail(target.account_id)
+    if account.type in ('liability', 'equity', 'income'):
+        target.amount *= -1
