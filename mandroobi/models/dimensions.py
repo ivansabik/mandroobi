@@ -46,7 +46,7 @@ def set_quarter(mapper, connection, accounting_period):
     '''
     Sets the quarter attribute based on the given month (1 to 3: 1, 4 to 6: 2, etc)
     '''
-    accounting_period.quarter = accounting_period.month // 4 + 1
+    accounting_period.quarter = int(accounting_period.month) // 4 + 1
 
 
 class BusinessUnit(Dimension):
