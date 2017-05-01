@@ -157,12 +157,14 @@ def test_get_non_existing_resoure():
         resource.get('IDONOTEXIST')
 
 
+@pytest.mark.usefixtures('create_test_db')
 def test_delete_non_existing_resoure():
     resource = DriverResource()
     with pytest.raises(NotFound):
         resource.delete('IDONOTEXIST')
 
 
+@pytest.mark.usefixtures('create_test_db')
 def test_patch_non_existing_resoure():
     resource = AccountResource()
     with pytest.raises(NotFound):
