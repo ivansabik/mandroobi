@@ -42,7 +42,6 @@ class ClosingBalance(Metric):
 
 @event.listens_for(ClosingBalance, 'before_insert')
 def add_sign(mapper, connection, target):
-    # TODO: Use relationship like target.account.type
     account = Account.find_or_fail(target.account_id)
     if account.type in ('liability', 'equity', 'income'):
         target.amount *= -1
