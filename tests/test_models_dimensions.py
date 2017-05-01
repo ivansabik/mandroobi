@@ -1,5 +1,9 @@
+from __future__ import absolute_import
 from datetime import date
 
+import pytest
+
+from .utils import create_test_db  # noqa
 from mandroobi.models.dimensions import Account, AccountingPeriod, BusinessUnit, Currency, Dimension, Driver, Scenario
 
 
@@ -32,6 +36,16 @@ def test_accounting_period():
     accounting_period.month = 12
     accounting_period.quarter = 4
     accounting_period.year = 1999
+
+
+@pytest.mark.usefixtures('create_test_db')
+def test_accounting_period_set_quarter():
+    accounting_period = AccountingPeriod.create(id='202011', month=6)
+    assert accounting_period.quarter == 2
+
+    # Quarter also gets persisted
+    accounting_period = AccountingPeriod.find('202011')
+    assert accounting_period.quarter == 2
 
 
 def test_business_unit():

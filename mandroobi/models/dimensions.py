@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from sqlalchemy import Column, Date, Enum, Integer, String, Text
+from sqlalchemy import Column, Date, Enum, event, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_mixins import ActiveRecordMixin
 
@@ -36,6 +36,17 @@ class AccountingPeriod(Dimension):
     month = Column('month', Integer)
     quarter = Column('quarter', Integer)
     year = Column('year', Integer)
+
+# TODO: validate if date or month, year
+# TODO: set_month, year if date exists
+
+
+@event.listens_for(AccountingPeriod, 'before_insert')
+def set_quarter(mapper, connection, accounting_period):
+    '''
+    Sets the quarter attribute based on the given month (1 to 3: 1, 4 to 6: 2, etc)
+    '''
+    accounting_period.quarter = accounting_period.month // 4 + 1
 
 
 class BusinessUnit(Dimension):
