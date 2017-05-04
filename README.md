@@ -2,6 +2,7 @@ mandroobi
 ===
 [![Run Status](https://api.shippable.com/projects/59041549cd25170600366419/badge?branch=master)](https://app.shippable.com/github/ivansabik/mandroobi)
 [![Coverage Badge](https://api.shippable.com/projects/59041549cd25170600366419/coverageBadge?branch=master)](https://app.shippable.com/github/ivansabik/mandroobi)
+[![Lintly](https://lintly.com/gh/ivansabik/mandroobi/badge.svg)](https://lintly.com/gh/ivansabik/mandroobi/)
 
 App for preparing budget and forecast Financial Statements (Balance Sheet and Income Statement) based on planning drivers.
 
