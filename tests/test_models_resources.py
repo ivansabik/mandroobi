@@ -14,7 +14,7 @@ from mandroobi.models.resources import (AccountResource, AccountingPeriodResourc
 @pytest.mark.usefixtures('create_test_db')
 def test_get_account():
     resource = AccountResource()
-    resource_dict = resource.get('10000').__dict__
+    resource_dict = resource.get('10000')
     assert resource_dict['id'] == '10000'
     assert resource_dict['parent_id'] is None
     assert resource_dict['description'] == 'Cash & Banks'
@@ -37,7 +37,7 @@ def test_put_business_unit():
     resource = BusinessUnitResource()
     app = Flask(__name__)
     with app.test_request_context('?id=TESTONI_LLC&description=Testoni,LLC&parent_id=&local_currency=USD'):
-        resource.put()
+        resource.put('TESTONI_LLC')
     resource = BusinessUnit.find('TESTONI_LLC')
     assert resource.id == 'TESTONI_LLC'
     assert resource.description == 'Testoni,LLC'
@@ -50,7 +50,7 @@ def test_put_account():
     resource = AccountResource()
     app = Flask(__name__)
     with app.test_request_context('?id=ID&description=NA&parent_id=&type=asset'):
-        resource.put()
+        resource.put('ID')
     assert resource
 
 
@@ -59,7 +59,7 @@ def test_put_accounting_period():
     resource = AccountingPeriodResource()
     app = Flask(__name__)
     with app.test_request_context('?id=ID&description=NA&parent_id=&month=1&year=2002'):
-        resource.put()
+        resource.put('ID')
     assert resource
 
 
@@ -68,7 +68,7 @@ def test_put_currency():
     resource = CurrencyResource()
     app = Flask(__name__)
     with app.test_request_context('?id=ID&description=NA&parent_id='):
-        resource.put()
+        resource.put('ID')
     assert resource
 
 
@@ -77,7 +77,7 @@ def test_put_driver():
     resource = DriverResource()
     app = Flask(__name__)
     with app.test_request_context('?id=ID&description=NA&parent_id='):
-        resource.put()
+        resource.put('ID')
     assert resource
 
 
@@ -86,7 +86,7 @@ def test_put_scenario():
     resource = ScenarioResource()
     app = Flask(__name__)
     with app.test_request_context('?id=ID&description=NA&parent_id='):
-        resource.put()
+        resource.put('ID')
     assert resource
 
 
@@ -177,4 +177,4 @@ def test_put_missing_param():
     app = Flask(__name__)
     with app.test_request_context('?id=5_YEAR_PLAN_2018_01'):
         with pytest.raises(BadRequest):
-            resource.put()
+            resource.put('5_YEAR_PLAN_2018_01')

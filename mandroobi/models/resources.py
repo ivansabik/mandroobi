@@ -29,7 +29,11 @@ class ApiResource(Resource):
 
         return: dict with parsed args, coming from self.parser.parse_args()
         '''
-        raise NotImplementedError('Needs to be implemented by inheriting class')
+        raise NotImplementedError('_validate_put_patch_params needs to be implemented by inheriting class')
+
+    def _abort(self, resource_id):
+        resource_name = self.__class__.__name__.replace('Resource', '')
+        abort(404, message='{} {} does not exist'.format(resource_name, resource_id))
 
     def get(self, id):
         '''
@@ -38,9 +42,9 @@ class ApiResource(Resource):
         try:
             resource = self.resource_model.find_or_fail(id)
         except ModelNotFoundError:
-            abort(404, message='{} does not exist'.format(id))
+            self._abort(id)
         else:
-            return resource
+            return resource._to_dict()
 
     def delete(self, id):
         '''
@@ -49,18 +53,19 @@ class ApiResource(Resource):
         try:
             resource = self.resource_model.find_or_fail(id)
         except ModelNotFoundError:
-            abort(404, message='{} does not exist'.format(id))
+            self._abort(id)
         else:
             resource.delete()
-            return {'success': True, 'message': '{} id deleted'.format(id)}, 204
+            return {'success': True, 'message': '{} id deleted'.format(id), 'data': resource._to_dict()}, 200
 
-    def put(self):
+    def put(self, id):
         '''
         Creates a new API resource
         '''
         args = self._validate_put_patch_params(put=True)
+        args['id'] = id
         resource = self.resource_model().create(**args)
-        return resource, 201
+        return {'success': True, 'message': '{} id created'.format(id), 'data': resource._to_dict()}, 201
 
     def patch(self, id):
         '''
@@ -69,17 +74,19 @@ class ApiResource(Resource):
         try:
             resource = self.resource_model.find_or_fail(id)
         except ModelNotFoundError:
-            abort(404, message='{} does not exist'.format(id))
+            self._abort(id)
         else:
             args = self._validate_put_patch_params(put=False)
-            return resource.update(**args), 200
+            resource = resource.update(**args)
+            return {'success': True, 'message': '{} id updated'.format(id), 'date': resource._to_dict()}, 200
 
 
+# API resources
 class AccountResource(ApiResource):
     def _validate_put_patch_params(self, put=True):
         if put:
             required = True
-            self.parser.add_argument('id', required=required)
+            self.parser.add_argument('id', required=False)
         else:
             required = False
         self.parser.add_argument('description', required=required)
@@ -92,7 +99,7 @@ class AccountingPeriodResource(ApiResource):
     def _validate_put_patch_params(self, put=True):
         if put:
             required = True
-            self.parser.add_argument('id', required=required)
+            self.parser.add_argument('id', required=False)
         else:
             required = False
         self.parser.add_argument('description', required=required)
@@ -109,7 +116,7 @@ class BusinessUnitResource(ApiResource):
     def _validate_put_patch_params(self, put=True):
         if put:
             required = True
-            self.parser.add_argument('id', required=required)
+            self.parser.add_argument('id', required=False)
         else:
             required = False
         self.parser.add_argument('description', required=required)
@@ -122,7 +129,7 @@ class CurrencyResource(ApiResource):
     def _validate_put_patch_params(self, put=True):
         if put:
             required = True
-            self.parser.add_argument('id', required=required)
+            self.parser.add_argument('id', required=False)
         else:
             required = False
         self.parser.add_argument('description', required=required)
@@ -134,7 +141,7 @@ class DriverResource(ApiResource):
     def _validate_put_patch_params(self, put=True):
         if put:
             required = True
-            self.parser.add_argument('id', required=required)
+            self.parser.add_argument('id', required=False)
         else:
             required = False
         self.parser.add_argument('description', required=required)
@@ -146,7 +153,7 @@ class ScenarioResource(ApiResource):
     def _validate_put_patch_params(self, put=True):
         if put:
             required = True
-            self.parser.add_argument('id', required=required)
+            self.parser.add_argument('id', required=False)
         else:
             required = False
         self.parser.add_argument('description', required=required)

@@ -16,6 +16,9 @@ class Dimension(Base, ActiveRecordMixin):
     description = Column('description', Text)
     parent_id = Column('parent_id', String(length=50))
 
+    def _to_dict(self):
+        raise NotImplementedError('_to_dict needs to be implemented by inheriting class')
+
 
 Dimension.set_session(session)
 
@@ -25,6 +28,9 @@ class Account(Dimension):
     __mapper_args__ = {'concrete': True}
 
     type = Column('type', Enum('asset', 'liability', 'equity', 'income', 'expense'))
+
+    def _to_dict(self):
+        return {'id': self.id, 'description': self.description, 'parent_id': self.parent_id, 'type': self.type}
 
 
 class AccountingPeriod(Dimension):
@@ -39,6 +45,20 @@ class AccountingPeriod(Dimension):
 
 # TODO: validate if date or month, year
 # TODO: set_month, year if date exists
+    def _to_dict(self):
+        try:
+            day = int(self.day)
+        except TypeError:
+            day = None
+        return {
+            'id': self.id,
+            'description': self.description,
+            'date': self.date,
+            'day': day,
+            'month': int(self.month),
+            'quarter': int(self.quarter),
+            'year': int(self.year)
+        }
 
 
 @event.listens_for(AccountingPeriod, 'before_insert')
@@ -55,17 +75,29 @@ class BusinessUnit(Dimension):
 
     local_currency = Column('local_currency', String(length=30))
 
+    def _to_dict(self):
+        return {'id': self.id, 'description': self.description, 'local_currency': self.local_currency}
+
 
 class Currency(Dimension):
     __tablename__ = 'currencies'
     __mapper_args__ = {'concrete': True}
+
+    def _to_dict(self):
+        return {'id': self.id, 'description': self.description}
 
 
 class Driver(Dimension):
     __tablename__ = 'drivers'
     __mapper_args__ = {'concrete': True}
 
+    def _to_dict(self):
+        return {'id': self.id, 'description': self.description}
+
 
 class Scenario(Dimension):
     __tablename__ = 'scenarios'
     __mapper_args__ = {'concrete': True}
+
+    def _to_dict(self):
+        return {'id': self.id, 'description': self.description}
