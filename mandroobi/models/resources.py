@@ -77,6 +77,8 @@ class ApiResource(Resource):
             self._abort(id)
         else:
             args = self._validate_put_patch_params(put=False)
+            # Since we want to update only passed args, remove None args
+            args = dict((key, value) for key, value in args.iteritems() if value)
             resource = resource.update(**args)
             return {'success': True, 'message': '{} id updated'.format(id), 'date': resource._to_dict()}, 200
 
